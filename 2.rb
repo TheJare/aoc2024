@@ -6,4 +6,4 @@ def valid_report?(r)
 end
 
 puts nums.filter { | r | valid_report?(r) } .count
-puts nums.filter { | r | (0...r.length).any? { | i | valid_report?(r[0...i] + r[(i+1)..]) } } .count
+puts nums.filter { | r | (0...r.length).any? { | i | valid_report?(r[...i] + r[(i+1)..]) } } .count
