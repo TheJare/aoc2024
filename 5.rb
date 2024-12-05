@@ -2,8 +2,8 @@ rules, reports = ARGF.map(&:strip).reject(&:empty?).partition { | l | l.index("|
 
 $rules_db = Hash.new { |h,k| h[k] = [] }
 rules.each do | line |
-  rule = line.strip.split("|")
-  $rules_db[rule[0].to_i].push(rule[1].to_i)
+  a, b = line.strip.split("|").map(&:to_i)
+  $rules_db[a].push(b)
 end
 
 def compare(a, b)
