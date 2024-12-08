@@ -14,25 +14,26 @@ end
 def find_antinodes(range)
   antinodes = Set.new
   try_add_antinode = -> (x, y) do
-    antinodes.add([x, y]) if x >= 0 && x < $w && y >= 0 && y < $h
+    return false if x < 0 || x >= $w || y < 0 || y >= $h
+    antinodes.add([x, y])
+    true
   end
 
   $towers.values.each do | freq_positions |
-    freq_positions.permutation(2).each do | p1, p2 |
-      dx = p1[0] - p2[0]
-      dy = p1[1] - p2[1]
-      range.each { | i | try_add_antinode.(p1[0]+i*dx, p1[1]+i*dy) }
+    freq_positions.permutation(2).each do | (x1, y1), (x2, y2) |
+      dx = x2 - x1
+      dy = y2 - y1
+      range.take_while { | i | try_add_antinode.(x1 + i*dx, y1 + i*dy) }
     end
   end
   antinodes.length
 end
 
-p find_antinodes [-2, 1]
-retries = [$w-1, $h-1].max
-p find_antinodes (-retries..retries)
+p find_antinodes [2]
+p find_antinodes 1.. # laziest thing ever
 
 # Enumerator.product(0...$h, 0...$w) do | y, x |
-#   print $antinodes.member?([x,y])? "#" : "."
+#   print antinodes.member?([x,y])? "#" : "."
 #   puts if x == $w-1
 # end
 
